@@ -45,9 +45,12 @@ func (container *Container) Start() (err error) {
 		}
 	}()
 
-	if err := container.Mount(); err != nil {
-		return err
-	}
+	// TODO WINDOWS
+	// Don't mount the fsroot when running the contianer, since the VHD
+	// will be needed by the process.
+	//if err := container.Mount(); err != nil {
+	//	return err
+	//}
 
 	// This is where is Linux it calls into the Exec Driver. TODO WINDOWS (see populateCommand())
 	if err := populateCommand(container, nil); err != nil {

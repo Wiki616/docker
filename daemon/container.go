@@ -292,9 +292,9 @@ func (container *Container) cleanup() {
 	}
 
 	// TODO WINDOWS. This can be factored out I believe (JJH 2/18) - Unmount
-	if err := container.Unmount(); err != nil {
-		log.Errorf("%v: Failed to umount filesystem: %v", container.ID, err)
-	}
+	//if err := container.Unmount(); err != nil {
+	//	log.Errorf("%v: Failed to umount filesystem: %v", container.ID, err)
+	//}
 
 	for _, eConfig := range container.execCommands.s {
 		container.daemon.unregisterExecCommand(eConfig)
@@ -388,9 +388,11 @@ func (container *Container) Restart(seconds int) error {
 	// Avoid unnecessarily unmounting and then directly mounting
 	// the container when the container stops and then starts
 	// again
-	if err := container.Mount(); err == nil {
-		defer container.Unmount()
-	}
+	// TODO WINDOWS
+	// Container fsroot shouldn't be mounted as part of running.
+	//if err := container.Mount(); err == nil {
+	//	defer container.Unmount()
+	//}
 
 	if err := container.Stop(seconds); err != nil {
 		return err
